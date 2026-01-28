@@ -10,6 +10,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 def main():
+    print("TOKEN =", TOKEN)
     if not TOKEN:
         raise RuntimeError("TOKEN manquant")
 
