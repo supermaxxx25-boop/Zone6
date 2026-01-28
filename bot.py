@@ -18,16 +18,15 @@ from telegram.ext import (
 # =========================
 
 TOKEN = os.getenv("TOKEN")
-ADMIN_ID = 8348647959  # ton ID admin Telegram
+ADMIN_ID = 8348647959  # ton ID Telegram
 
 if not TOKEN:
-    print("❌ TOKEN manquant")
     raise RuntimeError("TOKEN manquant")
 
 print("✅ TOKEN détecté")
 
 # =========================
-# PRODUITS (4 produits)
+# PRODUITS
 # =========================
 
 PRODUITS = {
@@ -52,7 +51,7 @@ def run_server():
     server.serve_forever()
 
 # =========================
-# HANDLERS BOT
+# HANDLERS
 # =========================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -86,7 +85,7 @@ async def add_panier(update: Update, context: ContextTypes.DEFAULT_TYPE):
     panier.append(int(query.data.split("_")[1]))
     context.user_data["panier"] = panier
 
-    await query.message.reply_text("✅ Ajouté au panier")
+    await query.message.reply_text("✅ Produit ajouté au panier")
 
 async def panier(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -117,24 +116,4 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     step = context.user_data.get("step")
 
     if step == "nom":
-        context.user_data["nom"] = update.message.text
-        context.user_data["step"] = "tel"
-        await update.message.reply_text("📞 Ton numéro de téléphone ?")
-
-    elif step == "tel":
-        context.user_data["tel"] = update.message.text
-        context.user_data["step"] = "adresse"
-        await update.message.reply_text("📍 Ton adresse complète ?")
-
-    elif step == "adresse":
-        context.user_data["adresse"] = update.message.text
-        await finaliser_commande(update, context)
-
-async def finaliser_commande(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    panier = context.user_data.get("panier", [])
-    total = sum(PRODUITS[p]["prix"] for p in panier)
-    recap = ", ".join(PRODUITS[p]["nom"] for p in panier)
-    numero = f"CMD-{datetime.now().strftime('%Y%m%d%H%M%S')}"
-
-    await update.message.reply_text(
-        f"✅ Commande confirmée\n📦 {numero}\
+        context
