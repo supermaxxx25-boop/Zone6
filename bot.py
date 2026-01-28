@@ -21,6 +21,7 @@ TOKEN = os.getenv("TOKEN")
 ADMIN_ID = 8348647959  # ton ID Telegram
 
 if not TOKEN:
+    print("❌ TOKEN manquant")
     raise RuntimeError("TOKEN manquant")
 
 print("✅ TOKEN détecté")
@@ -51,7 +52,7 @@ def run_server():
     server.serve_forever()
 
 # =========================
-# HANDLERS
+# HANDLERS BOT
 # =========================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -108,12 +109,4 @@ async def panier(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def commander(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    await query.answer()
-    context.user_data["step"] = "nom"
-    await query.message.reply_text("✍️ Ton nom complet ?")
-
-async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    step = context.user_data.get("step")
-
-    if step == "nom":
-        context
+   
